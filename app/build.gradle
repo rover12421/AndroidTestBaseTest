@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        test {
+            storeFile file("${rootDir}/test.keystore")
+            storePassword "a123456"
+            keyAlias "test"
+            keyPassword "a123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.test
+        }
+        release {
+            signingConfig signingConfigs.test
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        sdk30notest {
+            applicationId "plus.rover.shaka.androidtestbasetest.sdk30.notest"
+            targetSdkVersion 30
+            resValue "string", "app_name", "sdk30.notest"
+        }
+        sdk30testbase {
+            applicationId "plus.rover.shaka.androidtestbasetest.sdk30.testbase"
+            targetSdkVersion 30
+            resValue "string", "app_name", "sdk30.testbase"
+        }
+        sdk30testrunner {
+            applicationId "plus.rover.shaka.androidtestbasetest.sdk30.testrunner"
+            targetSdkVersion 30
+            resValue "string", "app_name", "sdk30.testrunner"
+        }
+        sdk29notest {
+            applicationId "plus.rover.shaka.androidtestbasetest.sdk29.notest"
+            targetSdkVersion 29
+            resValue "string", "app_name", "sdk29.notest"
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.name}.apk"
+        }
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+}
